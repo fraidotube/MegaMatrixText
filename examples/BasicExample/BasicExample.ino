@@ -1,50 +1,62 @@
 #include <MegaMatrixText.h>
 
+/*
+  Collegamenti MAX7219:
+
+  DIN -> pin 12
+  CLK -> pin 10
+  CS  -> pin 11
+*/
 MegaMatrixText matrix(12, 10, 11);
 
 void setup()
 {
+  /*
+    Inizializza il display.
+  */
   matrix.begin();
 
   /*
-    In negativo si accendono molti più LED,
-    quindi usiamo una luminosità moderata.
+    Luminosità da 0 a 15.
   */
-  matrix.setBrightness(4);
+  matrix.setBrightness(6);
 }
 
 void loop()
 {
   /*
-    Carattere normale.
+    Mostra un singolo carattere.
   */
-  matrix.setInverted(false);
   matrix.showChar('A');
 
-  delay(1500);
+  delay(1000);
 
   /*
-    Lo stesso carattere al negativo.
+    Mostra un testo un carattere alla volta.
   */
-  matrix.setInverted(true);
-  matrix.showChar('A');
+  matrix.showTextOneByOne(
+    "Arduino",
+    500
+  );
 
-  delay(1500);
+  delay(1000);
 
   /*
-    Testo normale.
-  */
-  matrix.setInverted(false);
+    Fa scorrere un testo da destra a sinistra.
 
+    Questa funzione è bloccante:
+    Arduino rimane occupato finché
+    lo scorrimento non termina.
+  */
   matrix.scrollText(
-    "Testo normale",
+    "Ciao Fraido!",
     80
   );
 
   delay(1000);
 
   /*
-    Testo negativo.
+    Attiva la modalità negativa.
   */
   matrix.setInverted(true);
 
@@ -53,10 +65,10 @@ void loop()
     80
   );
 
-  delay(1000);
-
   /*
-    Ripristiniamo la modalità normale.
+    Ripristina la modalità normale.
   */
   matrix.setInverted(false);
+
+  delay(1500);
 }
